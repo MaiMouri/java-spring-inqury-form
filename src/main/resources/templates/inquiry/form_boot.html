@@ -18,6 +18,7 @@
 
   <body>
 
+
 	<div th:replace="~{block/header::headerA}"></div>
     <main role="main" class="container">
 
@@ -25,29 +26,32 @@
         <h1 th:text="${title}">Bootstrap starter template</h1>
         <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
       </div>
+      
 
-<div th:object="${inquiryForm}">
-<div class="mb-5">
-<ul class="list-group">
-  <li th:text="*{name}"�@class="list-group-item">Dapibus ac facilisis in</li>
-  <li th:text="*{email}"�@class="list-group-item">Morbi leo risus</li>
-  <li th:text="*{contents}"class="list-group-item">Porta ac consectetur ac</li>
-</ul>
-</div>
-<form method="post" action="#" th:action="@{/inquiry/form}">
-	<input type="hidden" name="name" th:value="*{name}">
-	<input type="hidden" name="email" th:value="*{email}">
-	<input type="hidden" name="contents" th:value="*{contents}">
-	<button type="submit" class="btn btn-primary">Go Back</button>
-</form>
-<form method="post" action="#" th:action="@{/inquiry/complete}">
-	<input type="hidden" name="name" th:value="*{name}">
-	<input type="hidden" name="email" th:value="*{email}">
-	<input type="hidden" name="contents" th:value="*{contents}">
-	<button type="submit" class="btn btn-primary">Complete</button>
-</form>
-</div>
-
+	<div th:unless="${#strings.isEmpty(complete)}" >
+		<div th:text="${complete}" class="alert alert-success" role="alert">
+		  A simple success alert?check it out!
+		</div>
+	</div>
+	
+	<form method="post" action="#" th:action="@{/inquiry/confirm}" th:object="${inquiryForm}">
+	  <div class="form-group">
+	    <label for="name">Name</label>
+	    <input type="text" name="name" class="form-control" id="name" th:value="*{name}">
+	  </div>
+	  <div class="text-danger mb-4" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+	  <div class="form-group">
+	    <label for="email">Email</label>
+	    <input type="text" name="email" class="form-control" id="email"  th:value="*{email}">
+	  </div>
+	  <div class="text-danger mb-4" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+	  <div class="form-group">
+	    <label for="contents">Inquiry</label>
+	    <textarea  name="contents" class="form-control" id="detail" rows="3" th:field="*{contents}"></textarea>
+	  </div>
+	  <div class="text-danger mb-4" th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}"></div>
+	  <button type="submit" class="btn btn-primary">Confirm</button>
+	</form>
     </main><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
@@ -58,4 +62,3 @@
     <script src="../../assets/js/vendor/popper.min.js"  th:src="@{/js/popper.min.js}"></script>
     <script src="../../dist/js/bootstrap.min.js"  th:src="@{/js/bootstrap.min.js}"></script>
   </body>
-</html>
